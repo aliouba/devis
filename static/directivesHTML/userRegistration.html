@@ -1,0 +1,37 @@
+                <div class="spacer">
+                  <form id="formUserParams" name="formUserParams" class="form-horizontal" novalidate>
+                    <div class="form-group">
+                      <label for="inputemailuser" class="col-sm-2 control-label">Email</label>
+                      <div class="col-sm-10">
+                        <input type="email" class="form-control" id="inputemailuser" ng-model="params.mail" name="inputemailuser" placeholder="Email" required />
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="inputphoneuser" class="col-sm-2 control-label">Téléphone</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="inputphoneuser" ng-model="params.phone"  name="inputphoneuser" placeholder="Phone">
+                      </div>
+                    </div>  
+                    <div class="form-group">
+                      <label for="inputnomuser" class="col-sm-2 control-label">Nom</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="inputnomuser" ng-model="params.nom"  name="inputnomuser" placeholder="Nom">
+                      </div>
+                    </div>  
+                    <div class="form-group">
+                      <label for="inputprenomuser" class="col-sm-2 control-label">Prénom</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="inputprenomuser" ng-model="params.prenom"  name="inputprenomuser" placeholder="Prénom">
+                      </div>
+                    </div>  
+                    <div class="spacer">
+                      <button ng-click="todevis()" 
+                      class="btn btn-info text-center">Retour aux Prestations
+                    </button>
+                    <button ng-click="createestimate()" 
+                    class="btn btn-info pull-right"
+                    ng-disabled="formUserParams.$invalid">Valider
+                  </button>
+                </div>
+              </form>                   
+            </div>

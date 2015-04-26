@@ -1,0 +1,54 @@
+                <div class="spacer">
+
+                    <form id="formPltsActs" name="formPltsActs" class="form-inline" novalidate>
+                        
+                        <table class="table table-striped  spacer">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <a>Activités</a>
+                                        <span></span>
+                                    </th>
+                                    <th>
+                                        <a>Libellé</a>
+                                        <span></span>
+                                    </th>
+                                    <th>
+                                        <a>Nombre de Plants</a>
+                                        <span></span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr  ng-repeat="group in groups" >
+                                        <td>{{ group.name }}</td>
+                                        <td>
+                                           <select ng-model="activitySelected"  
+                                                    ng-change="selectBenefit(group.id,activitySelected)">
+                                                <option ng-repeat="activity in group.activities" value="{{activity.id}}" >
+                                                    {{activity.description}}
+                                                </option>
+                                            </select>
+                                        </td>
+                                        <td><input class="form-control" 
+                                                    value="{{params.nombrePlants}}"
+                                                    readonly
+                                            />
+                                        </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="spacer">
+                            <button ng-click="todevisparams()" 
+                                class="btn btn-info text-center">Revenir au Choix Type de Guyot
+                            </button>
+                            <button ng-click="touserdetails()" 
+                                class="btn btn-info pull-right" 
+                                ng-disabled="formPltsActs.$pristine">Valider
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+{{ auserauthed | json }}

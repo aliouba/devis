@@ -1,0 +1,81 @@
+                <div class="spacer">
+                    <form id="formPltsActsParam" name="formPltsActsParam" class="form-horizontal" novalidate>
+                         
+                        <h2>Guyot Simple ou Guyot Double</h2>            
+                        <div ng-if="conf.guyots" class="radio">
+                          <label>
+                            <input ng-model="params.optionsguyot" type="radio" name="optionsguyot" id="optionsguyot1" value="gs" checked required />
+                            Guyot Simple
+                          </label>
+                        </div>
+                        <div ng-if="conf.guyotd" class="radio">
+                          <label>
+                            <input ng-model="params.optionsguyot" type="radio" name="optionsguyot" id="optionsguyot2" value="gd" required />
+                            Guyot Double
+                          </label>
+                        </div>
+                        <div class="spacer" ng-if="parplant">
+                            <h2>Nombre de Plants </h2>
+                            <div class="form-group">
+                                <label for="inputnombreplants" class="col-sm-2 control-label">Nombre de Plants:</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control"   
+                                        type="number"
+                                        min="0" 
+                                        id="inputnombreplants"
+                                        value="0"
+                                        ng-model="params.nombrePlants" 
+                                    required />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="spacer" ng-if="parsuperficie">
+                            <div class="form-group">
+                                <label for="inputsuperficie" class="col-sm-2 control-label">Superficie:</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control"   
+                                        type="number"
+                                        min="0" 
+                                        id="inputsuperficie"
+                                        value="0"
+                                        ng-model="params.optionssuperficie" 
+                                    required />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputdistanceps" class="col-sm-2 control-label">Distance entre Ceps</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control"  
+                                        type="number"
+                                        min="0" 
+                                        id="inputdistanceps" 
+                                        value="0"
+                                        ng-model="params.optionsdistceps" 
+                                    required />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputdistancerangs" class="col-sm-2 control-label">Distance entre Rangs</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control"  
+                                        type="number"
+                                        min="0" 
+                                        id="inputdistancerangs"
+                                        value="0"
+                                        ng-model="params.optionsdistrangs" 
+                                    required />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="spacer">
+                            <button ng-click="toshowhome()" 
+                                class="btn btn-info text-center">Revenir au Début
+                            </button>
+                            <button ng-click="toestimate()" 
+                                class="btn btn-info pull-right"
+                                ng-disabled="formPltsActsParam.$invalid">Choisir vos prestations
+                            </button>
+                        </div>
+                    </form>                   
+                </div>

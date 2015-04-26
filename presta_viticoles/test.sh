@@ -1,0 +1,1 @@
+mysqldump -h 192.168.1.2 -u arno  -p KinderSurprise /home/backup/file.sql jayson
