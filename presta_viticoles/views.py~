@@ -9,15 +9,11 @@ from django.core.validators import validate_email
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.utils.six import BytesIO
 from django.http import JsonResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.views.generic import View
-from django.conf.urls import url
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.views.generic import ListView, DetailView, TemplateView
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -72,62 +68,6 @@ def make_estimate(request,siret):
     else:
         form = UserAuthLoginForm()
         return render(request, 'presta_viticoles/select-activities.html',{'form':form})
-class CompanyDetail(APIView):
-    """
-    Retrieve, update or delete a company instance.
-    """
-    def get_object(self, siret):
-        try:
-            return Company.objects.get(siret=siret)
-        except Company.DoesNotExist:
-            raise Http404
-
-    def get(self, request, siret, format=None):
-        company = self.get_object(siret)
-        serializer = CompanySerializer(company)
-        return Response(serializer.data)
-class ConfDetail(APIView):
-    """
-    Retrieve, update or delete a company instance.
-    """
-    def get_object(self, siret):
-        try:
-            company = Company.objects.filter(siret=siret)[0]
-            return ConfigPrestaViticole.objects.get(company_id=company.id)
-        except ConfigPrestaViticole.DoesNotExist:
-            raise Http404
-
-    def get(self, request, siret, format=None):
-        conf = self.get_object(siret)
-        serializer = ConfigPrestaViticoleSerializer(conf)
-        return Response(serializer.data)
-class ActivitiesGroupList(APIView):
-    """
-    List all activities, or create a new activity.
-    """
-    def get(self, request, siret , format=None):
-        company = Company.objects.filter(siret=siret)[0]
-        acts = ActivityGroup.objects.filter(activity__company=company.id).distinct()
-        serializer = GroupActivitiesSerializer(acts,many=True)
-        return Response(serializer.data)
-class EstimatesCustomerList(APIView):
-    def get(self, request, customerID , format=None):
-        estim = Estimate.objects.filter(customer_id=customerID)
-        serializer = EstimateSerializer(estim,many=True)
-        return Response(serializer.data)
-class CEstimatesList(APIView):
-    """
-    List of all estimates by customer.
-    """
-    def get(self, request, customerID , format=None):
-        cestimates= Estimate.objects.filter(customer=customerID).values('nb','price_with_tax','price_without_tax')
-        for estimate in cestimates:
-            estimate["benefits"] = Benefit.objects.filter(estimate_id=estimate["id"]).values("price_with_tax")
-        print(cestimates)
-        serializer = CEstimateSerializer(cestimates,many=True)
-        print(serializer)
-        return Response(serializer.data)
-        
 def create_estimate(allparams,allbenefits):
     try:
         newcustomer = Customer.objects.get(user=allparams['customer'])
@@ -180,6 +120,7 @@ def check_post_new_estimate(request,allparams):
             estimate['customer'] = user 
             estimate['mail'] = allparams['mail']
     return estimate
+@login_required(login_url='/prestaviticoles/Clogin/')
 def estimates_customer(request,customerID):
     if request.user.is_authenticated():
         try:
@@ -192,47 +133,36 @@ def estimates_customer(request,customerID):
             return HttpResponseRedirect("/")
     else:
         return HttpResponseRedirect("/")
+def logout_customer(request):
+    logout(request)
+    return HttpResponseRedirect("/")
+
 def login_customer(request):
+    print("function")
     if request.method == 'POST':
+        print("post")
         email = request.POST['email']
         password = request.POST['password']
-        next = request.POST['next']
-        user = authenticate(username=email, password=password)
+        user = authenticate(username=email, password=password)           
         error = ""
-        try:
-            customer = Customer.objects.get(user=user)
-            if user is not None:
-                if user.is_active:
-                    login(request, user)
-                else:
-                    error = "Valid but the account has been disabled!"
-            else:
-                error = "The username and password were incorrect."
-        except ObjectDoesNotExist:
+        if user is not None:
             try:
-                emplpoyee = Employee.objects.get(user=user)
-                error = "Forbidden because you are an employee"
+                customer = Customer.objects.get(user=user)
             except ObjectDoesNotExist:
-                error = "Votre compte n'hexiste pas"
-        if next == "":
-            return HttpResponseRedirect("/prestaviticoles/Cbenefits/")
+                print("Forbidden")
+                return HttpResponseRedirect("Forbidden")  
+            if customer.user_id == user.id and user.is_active:
+                login(request, user)
+                print("ok")
+                return HttpResponseRedirect("/prestaviticoles/Cbenefits/"+str(customer.id))  
+            else:
+                print("Forbidden")
+                return HttpResponseRedirect("/forbidden")
         else:
-            return HttpResponseRedirect(next)
-class CEstimatesView(ListView):
-    model = Estimate 
-    context_object_name = 'cestimates'
-    template_name = 'presta_viticoles/home-customers.html'
-    def get_context_data(self, **kwargs):
-        context = super(CEstimatesView, self).get_context_data(**kwargs)
-        cestimates= Estimate.objects.filter(customer=self.kwargs['customerID'])
-        for estimate in cestimates:
-            benefits = Benefit.objects.filter(estimate=estimate)
-            estimate.benefits = benefits
-            onebenefit = benefits.first()
-            activity = ActivityPrestaViticole.objects.get(id=onebenefit.activity_id)
-            company = Company.objects.get(id=activity.company_id)
-            estimate.companyname = company.name
-            estimate.companyphone = company.phonenumber
-            estimate.companymail = company.mail
-        context["cestimates"] = cestimates
-        return context
+            form = UserAuthLoginForm()
+            print("Email address or/and password are not valid")
+            return render(request, 'presta_viticoles/login.html',{'form':form}) 
+    else:
+        form = UserAuthLoginForm()
+        print("Get")  
+        return render(request, 'presta_viticoles/login.html',{'form':form})       
