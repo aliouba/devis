@@ -1,19 +1,18 @@
-<div class="spacer">
+<div id="homemakedevis" class="spacer">
     <h2 class="spacer">
-        <div  class="alert alert-info text-center" role="alert">{{entr.name}}</div>
+        <h1 class="text-center fontsLobster">{{entr.name}}</h1>
+        <h2 class="text-center">{{entr.description}}</h2>
     </h2>
-    <p class="spacer" >Un service transparent.Nous vous accompagnons avec la meilleure façon possible afin de pouvoir proposer des devis automatiques à vos clients .Nous n'avez que quatre étapes pour mettre les informations nécessaires pour l'établissement de devis automatiques  .
-    </p>
     <div class="spacer  text-center">
         <button ng-click="todevisparams('plant')" 
-            ng-show="conf.plant == true"  
-            class="btn btn-lg btn-warning">
-            Faire le devis par plants
+        ng-show="conf.plant == true"  
+        class="btn btn-lg btn-warning">
+        Faire le devis par plants
         </button>
         <button ng-click="todevisparams('superficie')"  
-            ng-show="conf.superficie == true" 
-            class="btn btn-lg btn-info">  
-            Faire le devis par hectare  
+        ng-show="conf.superficie == true" 
+        class="btn btn-lg btn-info">  
+        Faire le devis par hectare  
         </button>
-    </div>                
+    </div>              
 </div>

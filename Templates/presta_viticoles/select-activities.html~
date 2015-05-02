@@ -69,7 +69,7 @@
         typeplousup="typePlOuSup"
     >
     </contenu-user>
-
+{{ conf }}
 </div>
 {% endverbatim %}
 {% else %}

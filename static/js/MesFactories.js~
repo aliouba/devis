@@ -13,19 +13,10 @@ angular.module("ActivityServiceMock", [])
         {siret:siret}
         );  
      },
-     getCEstimates: function (siret) {
+     getCEstimates: function (customer) {
        return $resource('/prestaviticoles/api/Cbenefits/:customer/',
-        {customer:siret}
+        {customer:customer}
         );  
-     },
-     getCAuthUser: function () {
-        $http.get('/prestaviticoles/api/CUser/')
-       .success(function (data, status, headers, config) {
-            return data;
-       })
-       .error(function (data, status, headers, config) {
-            return 0;
-       });
      },
      getSiretInPath: function(){
       newPath = $location.absUrl();
@@ -46,6 +37,7 @@ angular.module("ActivityServiceMock", [])
       };          
     },
     makeDeis: function (siret,groups,alloptions) {
+      console.log(groups);
       $http({
           url: "/prestaviticoles/make_estimate/"+siret+"/",
           contentType: 'application/json',

@@ -69,4 +69,16 @@ class EstimatesCustomerList(APIView):
         estim = Estimate.objects.filter(customer_id=customerID)
         serializer = EstimateSerializer(estim,many=True)
         return Response(serializer.data)
+class CEstimatesList(APIView):
+    """
+    List of all estimates by customer.
+    """
+    def get(self, request, customerID , format=None):
+        cestimates= Estimate.objects.filter(customer=customerID).values('id','nb','price_with_tax','price_without_tax')
+        for estimate in cestimates:
+            estimate["benefits"] = Benefit.objects.filter(estimate_id=estimate["id"]).values("price_with_tax")
+        print(cestimates)
+        serializer = CEstimateSerializer(cestimates,many=True)
+        print(serializer)
+        return Response(serializer.data)
 

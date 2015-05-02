@@ -1,10 +1,9 @@
 {% extends "base.html" %}
 {% load staticfiles %}
-{% block title %} Obtenir Un Devis {% endblock %}
+{% block title %} Vos devis {% endblock %}
 
 {% block content %}
 {% csrf_token %}
-{{ cestimates }}
 {% verbatim %} 
 <div class="row-fluid"  ng-app="viewCustomer" ng-controller="viewCustomerCtrl">
                 <table class="table table-striped table-hover spacer">
@@ -37,53 +36,13 @@
                         <td>{{oneEstimate.price_with_tax}}</td>
                         <td>{{oneEstimate.price_without_tax}}</td>
                         <td>{{oneEstimate.nb}}</td>
-                        <td>company</td>
+                        <td>{{ oneEstimate.company_name }}</td>
                         <td>{{oneEstimate.creationdate | date:'dd/MM/yyyy HH:mm'}}</td>
                     </tr>
                 </tbody>
             </table>
 </div>
 {% endverbatim %}
-<div class="row-fluid">
-	<table class="table table-striped table-hover spacer">
-                <thead>
-                    <tr>
-                        <th>
-                            <a ng-click="triDevis('pwt')">Price With Tax</a>
-                            <span class="hSpacer" ng-class="cssChevronsTri('pwt')"></span>
-                        </th>
-                        <th>
-                            <a ng-click="triDevis('pwta')">Price Without Tax</a>
-                            <span class="hSpacer" ng-class="cssChevronsTri('pwta')"></span>
-                        </th>
-                        <th>
-                            <a ng-click="triDevis('Company')">Nombre de Plants</a>
-                            <span class="hSpacer" ng-class="cssChevronsTri('subject')"></span>
-                        </th>
-                        <th>
-                            <a ng-click="triDevis('Company')">Company</a>
-                            <span class="hSpacer" ng-class="cssChevronsTri('Company')"></span>
-                        </th>
-                        <th>
-                            <a ng-click="triDevis('date')">Date</a>
-                            <span class="hSpacer" ng-class="cssChevronsTri('date')"></span>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-					{% for oneestimate in cestimates %}
-                    <tr class="clickable">
-                        <td>{{oneestimate.price_with_tax}}</td>
-                        <td>{{oneestimate.price_without_tax}}</td>
-                        <td>{{oneestimate.nb}}</td>
-                        <td>{{oneestimate.companyname}}</td>
-                        <td>{{oneestimate.creationdate}}</td>
-                    </tr>
-					{% endfor %}
-
-    	</tbody>
-    </table> 
-</div>
 {% endblock %}
 {% block othersscipt %}
 <script src="{% static "lib/tinymce/tinymce.min.js" %}"></script>

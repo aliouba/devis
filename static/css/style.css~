@@ -32,6 +32,11 @@ a {
 .clickable {
 	cursor: pointer;
 }
+.nav li:hover {
+    background-color: red;
+}
 #navbar{
+    background-color: #E8E8E8;
     border-bottom: thick dotted #e38d13;
+    color: #e38d13;
 }

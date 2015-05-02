@@ -12,7 +12,7 @@
     </head>
 
     <body>      
-        <nav class="navbar navbar-inverse">
+        <nav id="navbar" class="navbar navbar-inverse">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
               <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -26,10 +26,19 @@
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-              <ul class="nav navbar-nav navbar-right">
+              <ul class="nav navbar-nav">
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Rechercher <span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Une activité</a></li>
+                    <li><a href="#">Une entreprise</a></li>
+                  </ul>
+                </li>
+              </ul>             
+             <ul class="nav navbar-nav navbar-right">
                 {% if user.is_authenticated %}
                 <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Logged in" %}: {{ user.username }}  <span class="caret"></span></a>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ user.username }}  <span class="caret"></span></a>
                   <ul class="dropdown-menu" role="menu">
                     <li><a href="{% url 'Clogout' %}">{% trans "Deconnexion" %}</a></li>
                   </ul>
@@ -41,7 +50,7 @@
             </div><!-- /.navbar-collapse -->
         </nav>
 
-        <div class="container">
+        <div class="container-fluid">
             {% block content %}{% endblock %}
         </div>
         

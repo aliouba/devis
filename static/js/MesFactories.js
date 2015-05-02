@@ -13,15 +13,10 @@ angular.module("ActivityServiceMock", [])
         {siret:siret}
         );  
      },
-     getCEstimates: function (siret) {
+     getCEstimates: function (customer) {
        return $resource('/prestaviticoles/api/Cbenefits/:customer/',
-        {customer:siret}
+        {customer:customer}
         );  
-     },
-     getCAuthUser: function () {
-       return $resource('/prestaviticoles/api/CUser/',{ 
-            get : { method: 'GET'} 
-       });  
      },
      getSiretInPath: function(){
       newPath = $location.absUrl();
