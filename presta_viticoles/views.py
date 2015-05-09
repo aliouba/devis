@@ -162,4 +162,28 @@ def login_customer(request):
             return render(request, 'presta_viticoles/login.html',{'form':form}) 
     else:
         form = UserAuthLoginForm() 
-        return render(request, 'presta_viticoles/login.html',{'form':form})       
+        return render(request, 'presta_viticoles/login.html',{'form':form})
+def login_customerAJAX(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        email =  data['email']
+        password =  data['password']
+        user = authenticate(username=email, password=password)    
+        response_data = {}    
+        erreur=""   
+        if user is not None:
+            try:
+                customer = Customer.objects.get(user=user)
+                if customer.user_id == user.id and user.is_active:
+                    login(request, user)
+                    response_data['result'] = 'Successful User authentication!'
+                else:
+                    erreur = "Forbidden"
+            except ObjectDoesNotExist:
+                erreur = "Forbidden" 
+        else:
+            erreur = "Error with your mail/password"
+        if erreur != "":
+            response_data['erreur'] = erreur
+        return HttpResponse(json.dumps(response_data),content_type="application/json")
+

@@ -27,17 +27,25 @@ angular.module("ActivityServiceMock", [])
         }
       };          
     },
-     getCustomerInPath: function(){
+     getSiretInPath: function(){
       newPath = $location.absUrl();
       var tabPath = newPath.split("/");
       for (var i = 0; i < tabPath.length ; i++) {
-        if(tabPath[i] == "Cbenefits"){
+        if(tabPath[i] == "make_estimate"){
           return  tabPath[i+1];
         }
       };          
     },
+     loginByAjax: function(email,password){
+      $http({
+          url: "/prestaviticoles/CloginAjax/",
+          contentType: 'application/json',
+          method: 'POST',
+          data: { 'email': email,'password' : password},
+          dataType: 'json'
+      });
+    },
     makeDeis: function (siret,groups,alloptions) {
-      console.log(groups);
       $http({
           url: "/prestaviticoles/make_estimate/"+siret+"/",
           contentType: 'application/json',
