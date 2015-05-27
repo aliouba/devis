@@ -3,7 +3,7 @@ my_app.config(function($httpProvider,$resourceProvider,$routeProvider,$interpola
 	$httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 });
 
-my_app.controller("formMakedevisCtrl", function($scope,$routeParams, $location, $filter ,$http, $cookies,activitiesService ) {
+my_app.controller("formMakedevisCtrl", function($scope,$timeout,$routeParams, $location, $filter ,$http, $cookies,activitiesService ) {
 	$http.defaults.headers.post['X-CSRFToken'] = $cookies.csrftoken;
 	/////////////////////////////////////////Get Siret///////////////
 	$scope.siret = activitiesService.getSiretInPath();
@@ -26,19 +26,33 @@ my_app.controller("formMakedevisCtrl", function($scope,$routeParams, $location, 
 	};
 	////benefits////////
 	$scope.allbenefits = {};
-    $scope.userauthedfalse = 0;
-    $scope.userauthedtrue = 1;
+	$scope.userauthedfalse = 0;
+	$scope.userauthedtrue = 1;
 });
-my_app.controller("formloginnavCtrl", function($scope,$routeParams, $location, $filter ,$http, $cookies,activitiesService ) {
+my_app.controller("formloginnavCtrl", function($scope,$timeout,$routeParams, $location, $filter ,$http, $cookies,activitiesService ) {
 	$http.defaults.headers.post['X-CSRFToken'] = $cookies.csrftoken;
-    $scope.userauthedfalse = 0;
-    $scope.userauthedtrue = 1;
-    $scope.loginbyajax = function function_name (email,password) {
-    	$scope.loginAjax = activitiesService.loginByAjax(email,password);
-    	console.log($scope);
-    }
+	$scope.userauthedfalse = 0;
+	$scope.userauthedtrue = 1;
+	$scope.loginAjax = false;
+
+	$scope.loginAjaxFunc = function(email,password) {
+		activitiesService.loginByAjax(email,password)
+		.then(function(data) {
+			$scope.htmlsuccesslogin = '<a href="#" class="dropdown-toggle" data-toggle="dropdown">'+ data +'<span class="caret"></span></a><ul class="dropdown-menu" role="menu"><li><a href="/prestaviticoles">Déconnexion</a></li></ul>';
+			document.getElementById("loginnavbarsuccess").innerHTML = $scope.htmlsuccesslogin;
+			$scope.loginAjax = true;
+			console.log($scope.htmlsuccesslogin);
+		}, function(data) {
+			document.getElementById("erreurAjaxLog").innerHTML = '<div class="alert alert-danger" role="alert">'+ data +'</div>';
+			console.error(data);
+			$scope.loginAjax = false;
+			$timeout(emptyajaxloginerror, 3000);
+		}, function(data) {
+			document.getElementById("formLoginnavbar").innerHTML = '<center><img src="/media/loading_spinner.gif" /></center>';
+		});
+	}
 });
-my_app.controller("viewCustomerCtrl", function($scope,$routeParams, $location, $filter ,$http, $cookies,activitiesService ) {
+my_app.controller("viewCustomerCtrl", function($scope,$timeout,$routeParams, $location, $filter ,$http, $cookies,activitiesService ) {
 	$http.defaults.headers.post['X-CSRFToken'] = $cookies.csrftoken;
 	/////////////////////////////////////////Get Customer///////////////
 	$scope.customer = activitiesService.getCustomerInPath();
@@ -46,4 +60,6 @@ my_app.controller("viewCustomerCtrl", function($scope,$routeParams, $location, $
 	$scope.estimates = activitiesService.getCEstimates($scope.customer).query();
 });
 
-
+emptyajaxloginerror = function() {
+	document.getElementById("erreurAjaxLog").innerHTML = '';
+}

@@ -177,6 +177,7 @@ def login_customerAJAX(request):
                 if customer.user_id == user.id and user.is_active:
                     login(request, user)
                     response_data['result'] = 'Successful User authentication!'
+                    response_data['username'] = user.username
                 else:
                     erreur = "Forbidden"
             except ObjectDoesNotExist:

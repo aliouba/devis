@@ -6,11 +6,11 @@
     {% endblock %}
 {% block loginbar %} 
 {% verbatim %} 
-<form class="form" id="formLoginnavbar" ng-controller="formloginnavCtrl" name="formLoginnavbar" novalidate> 
+<form class="form-horizontal" role="form" id="formLoginnavbar" ng-controller="formloginnavCtrl" name="formLoginnavbar" novalidate> 
     <input class="form-control" id="id_email" ng-model="emaillogin" name="email" placeholder="Email" type="email" required>
     <input class="form-control" id="id_password" ng-model="passwordlogin" name="password" placeholder="Password " type="password" required><br>
-    <button type="btn btn-info pull-right" id="btnLoginAjax" class="btn btn-warning"  ng-click="loginbyajax(emaillogin,passwordlogin)"  ng-disabled="formLoginnavbar.$invalid">Login</button>
-    {{ emaillogin }}
+    <button type="btn btn-info pull-right" id="btnLoginAjax" class="btn btn-warning pull-right"  ng-click="loginAjaxFunc(emaillogin,passwordlogin)"  ng-disabled="formLoginnavbar.$invalid" style="margin-bottom:18px;">Login</button>
+    <div id="erreurAjaxLog"></div>
 </form>
 {% endverbatim %}
 {% endblock %}
