@@ -28,23 +28,27 @@ my_app.controller("formMakedevisCtrl", function($scope,$timeout,$routeParams, $l
 	$scope.allbenefits = {};
 	$scope.userauthedfalse = 0;
 	$scope.userauthedtrue = 1;
+    $scope.$on('handleBroadcastAuth', function(event, args) {
+        $scope.userauthedfalse = $scope.userauthedtrue;
+    });
 });
-my_app.controller("formloginnavCtrl", function($scope,$timeout,$routeParams, $location, $filter ,$http, $cookies,activitiesService ) {
+my_app.controller("formloginnavCtrl", function($scope,$rootScope,$timeout,$routeParams, $location, $filter ,$http, $cookies,activitiesService ) {
 	$http.defaults.headers.post['X-CSRFToken'] = $cookies.csrftoken;
 	$scope.userauthedfalse = 0;
 	$scope.userauthedtrue = 1;
 	$scope.loginAjax = false;
 
 	$scope.loginAjaxFunc = function(email,password) {
+		
 		activitiesService.loginByAjax(email,password)
 		.then(function(data) {
-			$scope.htmlsuccesslogin = '<a href="#" class="dropdown-toggle" data-toggle="dropdown">'+ data +'<span class="caret"></span></a><ul class="dropdown-menu" role="menu"><li><a href="/prestaviticoles">Déconnexion</a></li></ul>';
-			document.getElementById("loginnavbarsuccess").innerHTML = $scope.htmlsuccesslogin;
+			$scope.htmlsuccesslogin = '<a href="#" class="dropdown-toggle" data-toggle="dropdown">'+ data +'<span class="caret"></span></a><ul class="dropdown-menu" role="menu"><li><a href="/prestaviticoles/Clogout">Déconnexion</a></li></ul>';
+			document.getElementById("loginnavbarform").innerHTML = $scope.htmlsuccesslogin;
 			$scope.loginAjax = true;
-			console.log($scope.htmlsuccesslogin);
+			console.log(data);
+			$rootScope.$broadcast('handleBroadcastAuth', "yes");
 		}, function(data) {
 			document.getElementById("erreurAjaxLog").innerHTML = '<div class="alert alert-danger" role="alert">'+ data +'</div>';
-			console.error(data);
 			$scope.loginAjax = false;
 			$timeout(emptyajaxloginerror, 3000);
 		}, function(data) {

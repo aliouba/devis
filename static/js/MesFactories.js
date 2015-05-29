@@ -46,13 +46,13 @@ angular.module("ActivityServiceMock", [])
             dataType: 'json'
         }).success(function (data, status, response, header) {
           if (data.erreur) {
-            deferred.reject(data.erreur);
+            deferred.reject(data.erreur,response);
           } else{
               deferred.resolve(data.username);
           }
             deferred.resolve(data);
         }).error(function (data, status, response, header) {
-            deferred.reject(data);
+            deferred.reject(data,response);
         });
         return deferred.promise;
       },

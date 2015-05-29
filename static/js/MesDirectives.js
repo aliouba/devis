@@ -136,12 +136,6 @@ angular.module("MesDirectives", ["ActivityServiceMock"])
                                         $scope.benefits.push($scope.oneBenefit);
                                 }
                         };
-                        ///VALIDER
-                        $scope.createestimate = function(){
-                            $scope.params.parPlant = $scope.parplant;
-                            $scope.params.parSuperficie = $scope.parsuperficie;
-                            activitiesService.makeDeis($scope.entr.siret,$scope.benefits,$scope.params);
-                        };
                 }
 	}
 })
